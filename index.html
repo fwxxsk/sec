@@ -207,7 +207,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Spotify Widget */
+        /* Custom Audio Player */
         .music-player {
             position: absolute;
             bottom: 30px;
@@ -221,6 +221,36 @@
 
         .music-player.visible {
             opacity: 1;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 0.9rem;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-controls i {
+            font-size: 1.1rem;
+            cursor: none;
+            transition: color 0.3s ease;
+        }
+
+        .audio-controls i:hover {
+            color: #a0a0a0;
+        }
+
+        .song-title {
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
     </style>
@@ -263,7 +293,15 @@
     </div>
 
     <div class="music-player" id="music-player">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3CP6W4N2CnsZgejmUprD6v?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <audio id="bg-music" loop>
+            <source src="EMMAN_-_Teka_Lang_8D_MUZYKA_(mp3.pm) (1).mp3" type="audio/mpeg">
+        </audio>
+        
+        <div class="audio-controls" id="audio-toggle">
+            <i class="fa-solid fa-music"></i>
+            <span class="song-title">Teka Lang - Emman</span>
+            <i class="fa-solid fa-pause" id="play-icon"></i>
+        </div>
     </div>
 
     <script>
@@ -336,19 +374,38 @@
         }
         animateCursor();
 
-        // --- Entry Screen Logic ---
+        // --- Entry Screen & Audio Logic ---
         const entryScreen = document.getElementById('entry-screen');
         const mainContent = document.getElementById('main-content');
-        const musicPlayer = document.getElementById('music-player');
+        const musicPlayerContainer = document.getElementById('music-player');
+        
+        const bgMusic = document.getElementById('bg-music');
+        const audioToggle = document.getElementById('audio-toggle');
+        const playIcon = document.getElementById('play-icon');
+        let isPlaying = false;
 
         entryScreen.addEventListener('click', () => {
-            // Fade out the black screen
             entryScreen.style.opacity = '0';
             setTimeout(() => { entryScreen.style.visibility = 'hidden'; }, 800);
             
-            // Show the profile and Spotify widget
             mainContent.classList.add('visible');
-            musicPlayer.classList.add('visible');
+            musicPlayerContainer.classList.add('visible');
+
+            bgMusic.play();
+            isPlaying = true;
+        });
+
+        audioToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+            } else {
+                bgMusic.play();
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+            }
+            isPlaying = !isPlaying;
         });
     </script>
 </body>
