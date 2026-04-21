@@ -1,218 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>sec</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sec</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glow: 0 0 20px rgba(255, 255, 255, 0.15);
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
 
-<style>
-:root {
-    --text-main: #fff;
-    --text-muted: #aaa;
-    --glass-bg: rgba(255,255,255,0.03);
-    --glass-border: rgba(255,255,255,0.08);
-}
+        body {
+            font-family: 'Lexend', sans-serif;
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000000;
+        }
 
-* {margin:0;padding:0;box-sizing:border-box;cursor:none;}
+        /* Starry Canvas Background */
+        #star-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+        }
 
-body {
-    font-family: 'Lexend', sans-serif;
-    background: #000;
-    color: #fff;
-    overflow: hidden;
-}
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
 
-/* ENTER */
-#enter-screen {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-#enter-screen button {
-    padding: 15px 35px;
-    border-radius: 30px;
-    border: none;
-    font-weight: 600;
-}
+        /* Custom Cursor */
+        .cursor-dot, .cursor-trail {
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
 
-/* CARD */
-.card {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%) scale(0.9);
-    opacity: 0;
-    padding: 30px;
-    width: 260px;
-    border-radius: 20px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(15px);
-    text-align: center;
-    transition: 0.5s;
-}
-.card.show {
-    opacity: 1;
-    transform: translate(-50%,-50%) scale(1);
-}
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+        }
 
-.profile-img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
+        .cursor-trail {
+            width: 24px; height: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s;
+        }
 
-.name {font-size:18px;font-weight:600;margin-bottom:10px;}
+        /* Entry Screen */
+        #entry-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
 
-.btn {
-    display:block;
-    margin:8px 0;
-    padding:12px;
-    border-radius:12px;
-    text-decoration:none;
-    color:#fff;
-    background:rgba(255,255,255,0.05);
-    transition:0.2s;
-}
-.btn:hover {
-    background:rgba(255,255,255,0.15);
-    transform:scale(1.05);
-}
+        .click-text {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: pulseText 2s infinite;
+            color: #fff;
+        }
 
-/* CURSOR */
-.cursor-dot,.cursor-trail{
-    position:fixed;
-    border-radius:50%;
-    pointer-events:none;
-    transform:translate(-50%,-50%);
-    z-index:9999;
-}
-.cursor-dot{width:6px;height:6px;background:#fff;}
-.cursor-trail{width:30px;height:30px;border:1px solid rgba(255,255,255,0.4);}
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
 
-/* BG */
-canvas{position:fixed;width:100%;height:100%;z-index:-1;}
-</style>
+        /* Main Content */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+        }
+
+        .main-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glass Profile Card */
+        .profile-card {
+            width: 100%;
+            max-width: 380px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Anime Avatar */
+        .avatar-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: var(--glow);
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Typography */
+        .name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Badges */
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #ddd;
+        }
+
+        /* Links */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Spotify Widget */
+        .music-player {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            opacity: 0;
+            transition: opacity 1s ease 0.6s;
+            z-index: 100;
+        }
+
+        .music-player.visible {
+            opacity: 1;
+        }
+
+    </style>
 </head>
-
 <body>
 
-<div id="enter-screen">
-    <button>Enter</button>
-</div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-trail" id="cursor-trail"></div>
 
-<canvas id="star"></canvas>
+    <div id="entry-screen">
+        <div class="click-text">[ click to enter ]</div>
+    </div>
 
-<div class="card" id="card">
-    <img src="./587d67c5ed066bed847b5427191e87f4.jpg" class="profile-img">
+    <canvas id="star-canvas"></canvas>
+    <div class="bg-overlay"></div>
 
-    <div class="name">sec</div>
+    <div class="main-container" id="main-content">
+        <div class="profile-card">
+            
+            <div class="avatar-container">
+                <img src="587d67c5ed066bed847b5427191e87f4.jpg" alt="Profile" class="avatar">
+            </div>
 
-    <a href="https://discord.com/channels/@me" target="_blank" class="btn">
-        <i class="fab fa-discord"></i> Discord (911sec)
-    </a>
+            <h1 class="name">sec</h1>
 
-    <a href="https://github.com/fwxxsk" target="_blank" class="btn">
-        <i class="fab fa-github"></i> GitHub
-    </a>
+            <div class="badges">
+                <div class="badge"><i class="fa-solid fa-code"></i> Developer</div>
+                <div class="badge"><i class="fa-solid fa-location-dot"></i> Philippines</div>
+                <div class="badge"><i class="fa-solid fa-user"></i> 14y/o</div>
+            </div>
 
-    <a href="https://t.me/sleepysec" target="_blank" class="btn">
-        <i class="fab fa-telegram"></i> Telegram
-    </a>
-</div>
+            <div class="links">
+                <a href="https://discord.com/users/911sec" target="_blank" class="link-btn"><i class="fa-brands fa-discord"></i> Discord</a>
+                <a href="https://github.com/fwxxsk" target="_blank" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="https://t.me/sleepy_sec" target="_blank" class="link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
+            </div>
 
-<div class="cursor-dot"></div>
-<div class="cursor-trail"></div>
+        </div>
+    </div>
 
-<!-- YOUTUBE MUSIC -->
-<iframe id="yt"
-width="0" height="0"
-src="https://www.youtube.com/embed/J8SGtl9Dj6w?autoplay=0&loop=1&playlist=J8SGtl9Dj6w"
-allow="autoplay">
-</iframe>
+    <div class="music-player" id="music-player">
+        <iframe style="border-radius:12px" src="https://googleusercontent.com/spotify.com/13" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
 
-<script>
-// ENTER + MUSIC
-const btn = document.querySelector("#enter-screen button");
-const screen = document.getElementById("enter-screen");
-const card = document.getElementById("card");
-const yt = document.getElementById("yt");
+    <script>
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const numStars = 100;
 
-btn.onclick = () => {
-    yt.src = "https://www.youtube.com/embed/J8SGtl9Dj6w?autoplay=1&loop=1&playlist=J8SGtl9Dj6w";
-    screen.style.display = "none";
-    card.classList.add("show");
-};
+        function initStars() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.5,
+                    vx: Math.floor(Math.random() * 50) - 25,
+                    vy: Math.floor(Math.random() * 50) - 25
+                });
+            }
+        }
 
-// CURSOR
-let mx=0,my=0,tx=0,ty=0;
-const dot=document.querySelector(".cursor-dot");
-const trail=document.querySelector(".cursor-trail");
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#fff";
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i];
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctx.fill();
+                s.x += s.vx / 100;
+                s.y += s.vy / 100;
+                if (s.x < 0) s.x = canvas.width;
+                if (s.x > canvas.width) s.x = 0;
+                if (s.y < 0) s.y = canvas.height;
+                if (s.y > canvas.height) s.y = 0;
+            }
+            requestAnimationFrame(drawStars);
+        }
+        
+        initStars();
+        drawStars();
+        window.addEventListener('resize', initStars);
 
-document.addEventListener("mousemove",e=>{
-    mx=e.clientX; my=e.clientY;
-});
+        const dot = document.getElementById('cursor-dot');
+        const trail = document.getElementById('cursor-trail');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let trailX = mouseX;
+        let trailY = mouseY;
 
-function animate(){
-    tx+=(mx-tx)*0.15;
-    ty+=(my-ty)*0.15;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
 
-    dot.style.left=mx+"px";
-    dot.style.top=my+"px";
-    trail.style.left=tx+"px";
-    trail.style.top=ty+"px";
+        function animateCursor() {
+            let distX = mouseX - trailX;
+            let distY = mouseY - trailY;
+            trailX += distX * 0.15;
+            trailY += distY * 0.15;
+            trail.style.left = trailX + 'px';
+            trail.style.top = trailY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
 
-    requestAnimationFrame(animate);
-}
-animate();
+        const entryScreen = document.getElementById('entry-screen');
+        const mainContent = document.getElementById('main-content');
+        const musicPlayer = document.getElementById('music-player');
 
-// STARS
-const c=document.getElementById("star");
-const ctx=c.getContext("2d");
-
-function resize(){
-    c.width=innerWidth;
-    c.height=innerHeight;
-}
-resize();
-window.onresize=resize;
-
-let stars=[];
-for(let i=0;i<100;i++){
-    stars.push({
-        x:Math.random()*c.width,
-        y:Math.random()*c.height,
-        r:Math.random()*1.5,
-        s:Math.random()*0.3
-    });
-}
-
-function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    ctx.fillStyle="#fff";
-
-    stars.forEach(s=>{
-        s.y+=s.s;
-        if(s.y>c.height)s.y=0;
-
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fill();
-    });
-
-    requestAnimationFrame(draw);
-}
-draw();
-</script>
-
+        entryScreen.addEventListener('click', () => {
+            entryScreen.style.opacity = '0';
+            setTimeout(() => { entryScreen.style.visibility = 'hidden'; }, 800);
+            mainContent.classList.add('visible');
+            musicPlayer.classList.add('visible');
+        });
+    </script>
 </body>
 </html>
