@@ -30,7 +30,6 @@
             background-color: #000000;
         }
 
-        /* Starry Canvas Background */
         #star-canvas {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -44,7 +43,6 @@
             z-index: -1;
         }
 
-        /* Custom Cursor */
         .cursor-dot, .cursor-trail {
             position: fixed;
             top: 0; left: 0;
@@ -66,7 +64,6 @@
             transition: width 0.2s, height 0.2s;
         }
 
-        /* Entry Screen */
         #entry-screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -91,7 +88,6 @@
             50% { opacity: 0.3; }
         }
 
-        /* Main Content */
         .main-container {
             display: flex;
             justify-content: center;
@@ -107,7 +103,6 @@
             transform: translateY(0);
         }
 
-        /* Glass Profile Card */
         .profile-card {
             width: 100%;
             max-width: 380px;
@@ -121,7 +116,6 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
-        /* Anime Avatar */
         .avatar-container {
             position: relative;
             width: 110px;
@@ -142,7 +136,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Typography */
         .name {
             font-size: 1.5rem;
             font-weight: 600;
@@ -151,7 +144,6 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
 
-        /* Badges */
         .badges {
             display: flex;
             justify-content: center;
@@ -171,7 +163,6 @@
             color: #ddd;
         }
 
-        /* Links */
         .links {
             display: flex;
             flex-direction: column;
@@ -202,20 +193,9 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Spotify Widget */
-        .music-player {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            opacity: 0;
-            transition: opacity 1s ease 0.6s;
-            z-index: 100;
-        }
-
-        .music-player.visible {
-            opacity: 1;
+        /* Hidden Audio Element */
+        #bg-music {
+            display: none;
         }
 
     </style>
@@ -229,6 +209,10 @@
         <div class="click-text">[ click to enter ]</div>
     </div>
 
+    <audio id="bg-music" loop>
+        <source src="EMMAN_-_Teka_Lang_8D_MUZYKA_(mp3.pm) (1).mp3" type="audio/mpeg">
+    </audio>
+
     <canvas id="star-canvas"></canvas>
     <div class="bg-overlay"></div>
 
@@ -236,7 +220,7 @@
         <div class="profile-card">
             
             <div class="avatar-container">
-                <img src="587d67c5ed066bed847b5427191e87f4.jpg" alt="Profile" class="avatar">
+                <img src="587d67c5ed066bed847b5427191e87f4.jpg" <alt="Profile" class="avatar">
             </div>
 
             <h1 class="name">sec</h1>
@@ -254,10 +238,6 @@
             </div>
 
         </div>
-    </div>
-
-    <div class="music-player" id="music-player">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/47UUjZbqZjcrzELnFBB1Ht?utm_source=generator" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <script>
@@ -330,14 +310,16 @@
 
         const entryScreen = document.getElementById('entry-screen');
         const mainContent = document.getElementById('main-content');
-        const musicPlayer = document.getElementById('music-player');
+        const audio = document.getElementById('bg-music');
 
         entryScreen.addEventListener('click', () => {
+            // Start the music as soon as they click
+            audio.play(); 
+            
             entryScreen.style.opacity = '0';
             setTimeout(() => { entryScreen.style.visibility = 'hidden'; }, 800);
             mainContent.classList.add('visible');
-            musicPlayer.classList.add('visible');
         });
     </script>
 </body>
-    </html>
+</html>
