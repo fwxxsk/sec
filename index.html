@@ -66,11 +66,6 @@
             transition: width 0.2s, height 0.2s;
         }
 
-        a:hover ~ .cursor-trail, .btn:hover ~ .cursor-trail {
-            width: 40px; height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
         /* Entry Screen */
         #entry-screen {
             position: absolute;
@@ -126,7 +121,6 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
-        /* Anime Avatar */
         .avatar-container {
             position: relative;
             width: 110px;
@@ -147,7 +141,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Typography */
         .name {
             font-size: 1.5rem;
             font-weight: 600;
@@ -156,7 +149,6 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
 
-        /* Badges */
         .badges {
             display: flex;
             justify-content: center;
@@ -176,7 +168,6 @@
             color: #ddd;
         }
 
-        /* Links */
         .links {
             display: flex;
             flex-direction: column;
@@ -237,22 +228,6 @@
             width: 100%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
-
-        .audio-controls i {
-            font-size: 1.1rem;
-            cursor: none;
-            transition: color 0.3s ease;
-        }
-
-        .audio-controls i:hover {
-            color: #a0a0a0;
-        }
-
-        .song-title {
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
     </style>
 </head>
 <body>
@@ -263,12 +238,12 @@
     <div id="entry-screen">
         <div class="click-text">[ click to enter ]</div>
     </div>
+
     <canvas id="star-canvas"></canvas>
     <div class="bg-overlay"></div>
 
     <div class="main-container" id="main-content">
         <div class="profile-card">
-            
             <div class="avatar-container">
                 <img class="avatar" src="https://cdn.discordapp.com/attachments/1413912191530438859/1484221048294473779/1fafe446dcbd802b56cdde6bda1260a6.jpg?ex=69bd7011&is=69bc1e91&hm=7b3e3e8011e3b68814c73d28dbfa50655d6f0ab57d3d3041c67ae42047a5499e&" alt="Profile Picture">
             </div>
@@ -283,11 +258,83 @@
 
             <div class="links">
                 <a href="#" class="link-btn"><i class="fa-brands fa-discord"></i> Discord</a>
-                <a href="#" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="https://github.com/fwxxsk" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
                 <a href="#" class="link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
             </div>
-
         </div>
     </div>
 
-    <div
+    <div class="music-player" id="music-player">
+        <div class="audio-controls">
+            <i class="fa-solid fa-play"></i>
+            <span class="song-title">Music Player</span>
+            <i class="fa-solid fa-music"></i>
+        </div>
+    </div>
+
+    <script>
+        const entryScreen = document.getElementById('entry-screen');
+        const mainContent = document.getElementById('main-content');
+        const musicPlayer = document.getElementById('music-player');
+        const dot = document.getElementById('cursor-dot');
+        const trail = document.getElementById('cursor-trail');
+
+        // Entry Logic
+        entryScreen.addEventListener('click', () => {
+            entryScreen.style.opacity = '0';
+            setTimeout(() => {
+                entryScreen.style.visibility = 'hidden';
+                mainContent.classList.add('visible');
+                musicPlayer.classList.add('visible');
+            }, 800);
+        });
+
+        // Cursor Logic
+        document.addEventListener('mousemove', (e) => {
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+            }, 50);
+        });
+
+        // Star Background Logic
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        for(let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 1.5,
+                velocity: Math.random() * 0.5
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fill();
+                star.y += star.velocity;
+                if(star.y > canvas.height) star.y = 0;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
