@@ -15,7 +15,12 @@
             --glow: 0 0 20px rgba(255, 255, 255, 0.15);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
 
         body {
             font-family: 'Lexend', sans-serif;
@@ -25,48 +30,199 @@
             background-color: #000000;
         }
 
-        #star-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
-        .bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.3); z-index: -1; }
+        /* Starry Canvas Background */
+        #star-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+        }
 
-        /* Cursor */
-        .cursor-dot, .cursor-trail { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
-        .cursor-dot { width: 6px; height: 6px; background: #fff; box-shadow: 0 0 10px #fff; }
-        .cursor-trail { width: 24px; height: 24px; border: 1px solid rgba(255, 255, 255, 0.5); transition: left 0.1s ease-out, top 0.1s ease-out; }
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-trail {
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-dot {
+            width: 6px; height: 6px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        .cursor-trail {
+            width: 24px; height: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        a:hover ~ .cursor-trail, .btn:hover ~ .cursor-trail {
+            width: 40px; height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+        }
 
         /* Entry Screen */
         #entry-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; justify-content: center; align-items: center;
-            z-index: 100; transition: opacity 0.8s ease, visibility 0.8s ease;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-        .click-text { letter-spacing: 4px; text-transform: uppercase; animation: pulseText 2s infinite; color: #fff; }
-        @keyframes pulseText { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        /* Card */
+        .click-text {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: pulseText 2s infinite;
+            color: #fff;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Main Content */
         .main-container {
-            display: flex; justify-content: center; align-items: center; height: 100%;
-            opacity: 0; transform: translateY(20px); transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
         }
-        .main-container.visible { opacity: 1; transform: translateY(0); }
+
+        .main-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glass Profile Card */
         .profile-card {
-            width: 90%; max-width: 380px; background: var(--glass-bg); backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px 30px; text-align: center;
+            width: 100%;
+            max-width: 380px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
-        .avatar-container { width: 110px; height: 110px; margin: 0 auto 20px; border-radius: 50%; padding: 3px; background: rgba(255, 255, 255, 0.1); box-shadow: var(--glow); }
-        .avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .name { font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; }
-        .badges { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; }
-        .badge { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; color: #ddd; }
-        
-        .links { display: flex; flex-direction: column; gap: 12px; }
-        .link-btn { padding: 14px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; color: #fff; text-decoration: none; transition: 0.3s; }
-        .link-btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-2px); }
+        /* Anime Avatar */
+        .avatar-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: var(--glow);
+        }
 
-        /* Music Player */
-        .music-player { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 300px; opacity: 0; transition: 1s ease 0.6s; }
-        .music-player.visible { opacity: 1; }
-        .audio-controls { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 12px 20px; border-radius: 50px; backdrop-filter: blur(10px); }
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Typography */
+        .name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Badges */
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: #ddd;
+        }
+
+        /* Links */
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Spotify Widget */
+        .music-player {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            opacity: 0;
+            transition: opacity 1s ease 0.6s;
+            z-index: 100;
+        }
+
+        .music-player.visible {
+            opacity: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -83,98 +239,116 @@
 
     <div class="main-container" id="main-content">
         <div class="profile-card">
+            
             <div class="avatar-container">
-                <img class="avatar" src="https://cdn.discordapp.com/attachments/1413912191530438859/1484221048294473779/1fafe446dcbd802b56cdde6bda1260a6.jpg?ex=69bd7011&is=69bc1e91&hm=7b3e3e8011e3b68814c73d28dbfa50655d6f0ab57d3d3041c67ae42047a5499e&" alt="Profile">
+                <img src="https://i.pinimg.com/564x/86/e8/35/86e8354c25985854b7bbffc6bc4b5b7c.jpg" alt="Profile" class="avatar">
             </div>
+
             <h1 class="name">SKYE PERO MABAIT</h1>
+
             <div class="badges">
                 <div class="badge"><i class="fa-solid fa-code"></i> Developer</div>
                 <div class="badge"><i class="fa-solid fa-location-dot"></i> Philippines</div>
                 <div class="badge"><i class="fa-solid fa-user"></i> 14y/o</div>
             </div>
+
             <div class="links">
                 <a href="#" class="link-btn"><i class="fa-brands fa-discord"></i> Discord</a>
-                <a href="https://github.com/fwxxsk" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="#" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
                 <a href="#" class="link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
             </div>
+
         </div>
     </div>
 
     <div class="music-player" id="music-player">
-        <div class="audio-controls" id="music-toggle">
-            <i class="fa-solid fa-play" id="play-icon"></i>
-            <span class="song-title">Teka Lang - Emman</span>
-            <i class="fa-solid fa-music"></i>
-        </div>
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6K0gBofhE36yJ7nLrlR0o7?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="EMMAN_-_Teka_Lang_8D_MUZYKA_(mp3.pm) (1).mp3" type="audio/mpeg">
-    </audio>
-
     <script>
-        const entryScreen = document.getElementById('entry-screen');
-        const mainContent = document.getElementById('main-content');
-        const musicPlayer = document.getElementById('music-player');
-        const audio = document.getElementById('bg-music');
-        const playIcon = document.getElementById('play-icon');
-        const musicToggle = document.getElementById('music-toggle');
-
-        // Entry + Play Music
-        entryScreen.addEventListener('click', () => {
-            entryScreen.style.opacity = '0';
-            audio.play().catch(() => console.log("User interaction needed"));
-            setTimeout(() => {
-                entryScreen.style.visibility = 'hidden';
-                mainContent.classList.add('visible');
-                musicPlayer.classList.add('visible');
-                playIcon.classList.replace('fa-play', 'fa-pause');
-            }, 800);
-        });
-
-        // Play/Pause Toggle
-        musicToggle.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                playIcon.classList.replace('fa-play', 'fa-pause');
-            } else {
-                audio.pause();
-                playIcon.classList.replace('fa-pause', 'fa-play');
-            }
-        });
-
-        // Cursor Logic
-        const dot = document.getElementById('cursor-dot');
-        const trail = document.getElementById('cursor-trail');
-        document.addEventListener('mousemove', (e) => {
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-            setTimeout(() => {
-                trail.style.left = e.clientX + 'px';
-                trail.style.top = e.clientY + 'px';
-            }, 40);
-        });
-
-        // Star Background
+        // --- Starry Background Logic ---
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize);
-        resize();
-        for(let i = 0; i < 150; i++) {
-            stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.5, v: Math.random() * 0.5 });
+        const numStars = 100;
+
+        function initStars() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.5,
+                    vx: Math.floor(Math.random() * 50) - 25,
+                    vy: Math.floor(Math.random() * 50) - 25
+                });
+            }
         }
-        function animate() {
+
+        function drawStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#fff';
-            stars.forEach(s => {
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
-                s.y += s.v; if(s.y > canvas.height) s.y = 0;
-            });
-            requestAnimationFrame(animate);
+            ctx.fillStyle = "#fff";
+            for (let i = 0; i < stars.length; i++) {
+                let s = stars[i];
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                ctx.fill();
+                s.x += s.vx / 100;
+                s.y += s.vy / 100;
+                if (s.x < 0) s.x = canvas.width;
+                if (s.x > canvas.width) s.x = 0;
+                if (s.y < 0) s.y = canvas.height;
+                if (s.y > canvas.height) s.y = 0;
+            }
+            requestAnimationFrame(drawStars);
         }
-        animate();
+        
+        initStars();
+        drawStars();
+        window.addEventListener('resize', initStars);
+
+        // --- Custom Cursor Logic ---
+        const dot = document.getElementById('cursor-dot');
+        const trail = document.getElementById('cursor-trail');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let trailX = mouseX;
+        let trailY = mouseY;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            dot.style.left = mouseX + 'px';
+            dot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            let distX = mouseX - trailX;
+            let distY = mouseY - trailY;
+            trailX += distX * 0.15;
+            trailY += distY * 0.15;
+            trail.style.left = trailX + 'px';
+            trail.style.top = trailY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // --- Entry Screen Logic ---
+        const entryScreen = document.getElementById('entry-screen');
+        const mainContent = document.getElementById('main-content');
+        const musicPlayer = document.getElementById('music-player');
+
+        entryScreen.addEventListener('click', () => {
+            // Fade out the black screen
+            entryScreen.style.opacity = '0';
+            setTimeout(() => { entryScreen.style.visibility = 'hidden'; }, 800);
+            
+            // Show the profile and Spotify widget
+            mainContent.classList.add('visible');
+            musicPlayer.classList.add('visible');
+        });
     </script>
 </body>
 </html>
