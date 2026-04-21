@@ -2,217 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>sec | Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --text-main: #ffffff;
-            --text-muted: #a0a0a0;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glow: 0 0 20px rgba(255, 255, 255, 0.15);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none;
-        }
-
-        body {
-            font-family: 'Lexend', sans-serif;
-            color: var(--text-main);
-            height: 100vh;
-            overflow: hidden;
-            background-color: #000000;
-        }
-
-        #star-canvas {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-        }
-
-        .bg-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: -1;
-        }
-
-        .cursor-dot, .cursor-trail {
-            position: fixed;
-            top: 0; left: 0;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-
-        .cursor-dot {
-            width: 6px; height: 6px;
-            background: #fff;
-            box-shadow: 0 0 10px #fff;
-        }
-
-        .cursor-trail {
-            width: 24px; height: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: width 0.2s, height 0.2s;
-        }
-
-        #entry-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 50;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-
-        .click-text {
-            font-size: 1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            animation: pulseText 2s infinite;
-            color: #fff;
-        }
-
-        @keyframes pulseText {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .main-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
-        }
-
-        .main-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .profile-card {
-            width: 100%;
-            max-width: 380px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-        }
-
-        .avatar-container {
-            position: relative;
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            padding: 3px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: var(--glow);
-        }
-
-        .avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            background-color: #000;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        .badges {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-            color: #ddd;
-        }
-
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .link-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 14px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 400;
-            transition: all 0.3s ease;
-        }
-
-        .link-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Responsive Fix for Mobile Cursor */
-        @media (max-width: 768px) {
-            .cursor-dot, .cursor-trail { display: none; }
-            * { cursor: auto; }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-trail" id="cursor-trail"></div>
 
-    <div id="entry-screen">
-        <div class="click-text">[ click to enter ]</div>
+    <div id="playing-notice" class="playing-notice" hidden aria-live="polite">
+        <span class="playing-dot" aria-hidden="true"></span>
+        <span class="playing-label">Playing</span>
+        <span class="playing-track" id="playing-detail">Co-Pilot — Just Hush</span>
     </div>
 
-    <audio id="bg-music" loop preload="auto">
-        <source src="copilot.mp3" type="audio/mpeg">
+    <div id="entry-screen">
+        <div class="entry-inner">
+            <div class="album-showcase" aria-hidden="true">
+                <div class="album-sleeve">
+                    <img
+                        class="sleeve-cover"
+                        src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cace1bdabda6d847f3bd81ab"
+                        width="640"
+                        height="640"
+                        alt="Co-Pilot — Just Hush">
+                </div>
+                <div class="vinyl-side">
+                    <div class="vinyl-wrap">
+                        <div class="vinyl-disk">
+                            <div class="vinyl-label">
+                                <img
+                                    src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cace1bdabda6d847f3bd81ab"
+                                    width="256"
+                                    height="256"
+                                    alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="entry-album-meta">
+                <div class="entry-track">Co-Pilot</div>
+                <div class="entry-artist">Just Hush</div>
+            </div>
+            <div class="click-text">[ click to enter ]</div>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop preload="auto" playsinline>
+        <source src="audio.mp3" type="audio/mpeg">
     </audio>
-    
+
     <canvas id="star-canvas"></canvas>
     <div class="bg-overlay"></div>
 
@@ -238,89 +81,6 @@
         </div>
     </div>
 
-    <script>
-        // Star Animation
-        const canvas = document.getElementById('star-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        const numStars = 100;
-
-        function initStars() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for (let i = 0; i < numStars; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    vx: Math.floor(Math.random() * 50) - 25,
-                    vy: Math.floor(Math.random() * 50) - 25
-                });
-            }
-        }
-
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#fff";
-            for (let i = 0; i < stars.length; i++) {
-                let s = stars[i];
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-                ctx.fill();
-                s.x += s.vx / 100;
-                s.y += s.vy / 100;
-                if (s.x < 0) s.x = canvas.width;
-                if (s.x > canvas.width) s.x = 0;
-                if (s.y < 0) s.y = canvas.height;
-                if (s.y > canvas.height) s.y = 0;
-            }
-            requestAnimationFrame(drawStars);
-        }
-        
-        initStars();
-        drawStars();
-        window.addEventListener('resize', initStars);
-
-        // Custom Cursor
-        const dot = document.getElementById('cursor-dot');
-        const trail = document.getElementById('cursor-trail');
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let trailX = mouseX;
-        let trailY = mouseY;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            dot.style.left = mouseX + 'px';
-            dot.style.top = mouseY + 'px';
-        });
-
-        function animateCursor() {
-            let distX = mouseX - trailX;
-            let distY = mouseY - trailY;
-            trailX += distX * 0.15;
-            trailY += distY * 0.15;
-            trail.style.left = trailX + 'px';
-            trail.style.top = trailY + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        // Audio and Entrance Logic
-        const entryScreen = document.getElementById('entry-screen');
-        const mainContent = document.getElementById('main-content');
-        const audio = document.getElementById('bg-music');
-
-        entryScreen.addEventListener('click', () => {
-            audio.volume = 0.5;
-            audio.play().catch(e => console.error("Playback failed:", e));
-            
-            entryScreen.style.opacity = '0';
-            setTimeout(() => { entryScreen.style.display = 'none'; }, 800);
-            mainContent.classList.add('visible');
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
