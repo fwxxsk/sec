@@ -1,194 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fwxxsk | Pentest Arsenal & Chaos Engineer</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@300;400;500&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #000 100%);
-            color: #00ff88;
-            font-family: 'Fira Code', monospace;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        /* Animated Background */
-        .matrix-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            opacity: 0.1;
-        }
-        
-        /* Header */
-        .header {
-            text-align: center; padding: 40px 20px;
-            background: rgba(0,255,136,0.1);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid #00ff88;
-        }
-        .profile-img {
-            width: 150px; height: 150px;
-            border-radius: 50%;
-            border: 3px solid #00ff88;
-            box-shadow: 0 0 30px #00ff88;
-            animation: pulse 2s infinite;
-            margin-bottom: 20px;
-            background: url('587d67c5ed066bed847b5427191e87f4.jpg') center/cover;
-        }
-        @keyframes pulse { 0%,100%{box-shadow:0 0 30px #00ff88;} 50%{box-shadow:0 0 60px #00ff88;} }
-        
-        h1 { 
-            font-family: 'Orbitron', monospace; 
-            font-size: 2.5em; 
-            font-weight: 900; 
-            background: linear-gradient(45deg, #00ff88, #00ccff);
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            text-shadow: 0 0 20px #00ff88;
-        }
-        .subtitle { font-size: 1.1em; opacity: 0.9; color: #ccc; }
-        
-        /* Music Queue */
-        .music-section {
-            max-width: 800px; margin: 40px auto; padding: 30px;
-            background: rgba(0,0,0,0.7); border: 1px solid #00ff88;
-            border-radius: 15px; backdrop-filter: blur(10px);
-        }
-        .music-title {
-            font-family: 'Orbitron'; font-size: 1.8em; text-align: center;
-            margin-bottom: 25px; color: #00ff88;
-        }
-        .playlist {
-            font-family: 'Fira Code'; background: rgba(0,255,136,0.1);
-            padding: 20px; border-radius: 10px; border-left: 4px solid #00ff88;
-            line-height: 1.8; font-size: 0.95em;
-        }
-        .music-status {
-            text-align: center; margin-top: 15px;
-            font-size: 0.9em; color: #00ccff;
-            animation: blink 1.5s infinite;
-        }
-        @keyframes blink { 0%,50%{opacity:1;} 51%,100%{opacity:0.3;} }
-        
-        /* Connect Table */
-        .connect-section {
-            max-width: 800px; margin: 40px auto; padding: 30px;
-            background: rgba(0,0,0,0.7); border: 1px solid #00ccff;
-            border-radius: 15px; backdrop-filter: blur(10px);
-        }
-        .connect-title { font-family: 'Orbitron'; font-size: 1.8em; text-align: center; margin-bottom: 25px; color: #00ccff; }
-        table { width: 100%; border-collapse: collapse; font-family: 'Fira Code'; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
-        th { background: rgba(0,204,255,0.2); color: #00ccff; font-weight: 500; }
-        .badge {
-            background: linear-gradient(45deg, #00ff88, #00ccff);
-            color: #000; padding: 6px 12px; border-radius: 20px;
-            font-size: 0.85em; font-weight: 500; text-decoration: none;
-            transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,255,136,0.3);
-        }
-        .badge:hover {
-            transform: scale(1.05); box-shadow: 0 6px 25px rgba(0,255,136,0.5);
-            text-decoration: none; color: #000;
-        }
-        .badge.telegram { background: linear-gradient(45deg, #0088cc, #00cc88); }
-        .badge.discord { background: linear-gradient(45deg, #5865f2, #7289da); }
-        .badge.github { background: linear-gradient(45deg, #181717, #333); color: #fff; }
-        
-        /* Ops Section */
-        .ops-section {
-            max-width: 800px; margin: 40px auto; padding: 30px;
-            background: rgba(255,0,0,0.1); border: 2px solid #ff4444;
-            border-radius: 15px; backdrop-filter: blur(10px);
-        }
-        .ops-title { font-family: 'Orbitron'; font-size: 1.8em; text-align: center; margin-bottom: 25px; color: #ff4444; }
-        .target-box {
-            background: #000; padding: 20px; border-radius: 10px;
-            border: 1px solid #ff4444; font-family: 'Fira Code';
-            font-size: 1.1em; text-align: center; margin-bottom: 20px;
-        }
-        .target-phone { font-size: 1.5em; color: #ff6666; font-weight: bold; }
-        .status-bar {
-            display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-            font-size: 0.95em; color: #ffcc00;
-        }
-        .status-item { background: rgba(255,204,0,0.2); padding: 8px 15px; border-radius: 20px; }
-        
-        /* Repo Links */
-        .repo-section {
-            max-width: 800px; margin: 40px auto; padding: 30px;
-            background: rgba(0,0,0,0.7); border: 1px solid #00ff88;
-            border-radius: 15px; backdrop-filter: blur(10px);
-        }
-        .repo-title { font-family: 'Orbitron'; font-size: 1.8em; text-align: center; margin-bottom: 25px; color: #00ff88; }
-        .repo-list {
-            list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-        .repo-item {
-            background: rgba(0,255,136,0.1); padding: 20px; border-radius: 10px;
-            border-left: 4px solid #00ff88; transition: all 0.3s;
-        }
-        .repo-item:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,255,136,0.3); }
-        .repo-link {
-            color: #00ff88; text-decoration: none; font-weight: 500;
-            font-size: 1.1em;
-        }
-        .repo-link:hover { text-decoration: underline; }
-        
-        /* Footer Terminal */
-        .footer {
-            text-align: center; padding: 40px 20px; color: #666;
-            font-family: 'Fira Code'; font-size: 0.9em;
-            border-top: 1px solid #333; margin-top: 40px;
-        }
-        .terminal {
-            background: #000; color: #00ff88; padding: 20px;
-            border-radius: 10px; margin-top: 20px; font-family: 'Fira Code';
-            border: 1px solid #00ff88; max-width: 600px; margin: 20px auto;
-        }
-        .prompt { color: #00ccff; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 2em; }
-            .profile-img { width: 120px; height: 120px; }
-            .music-section, .connect-section, .ops-section, .repo-section { margin: 20px; padding: 20px; }
-        }
-        
-        /* Audio Controls (Optional) */
-        .audio-controls {
-            position: fixed; bottom: 20px; right: 20px;
-            background: rgba(0,0,0,0.8); padding: 15px; border-radius: 50px;
-            border: 2px solid #00ff88; backdrop-filter: blur(10px);
-            display: flex; gap: 10px; align-items: center;
-        }
-        .play-btn {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: linear-gradient(45deg, #00ff88, #00ccff);
-            border: none; cursor: pointer; font-size: 1.2em;
-            transition: all 0.3s;
-        }
-        .play-btn:hover { transform: scale(1.1); box-shadow: 0 5px 20px rgba(0,255,136,0.5); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sec</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+    --text-main: #fff;
+    --text-muted: #aaa;
+    --glass-bg: rgba(255,255,255,0.03);
+    --glass-border: rgba(255,255,255,0.08);
+}
+
+* {margin:0;padding:0;box-sizing:border-box;cursor:none;}
+
+body {
+    font-family: 'Lexend', sans-serif;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* ENTER */
+#enter-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+#enter-screen button {
+    padding: 15px 35px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+}
+
+/* CARD */
+.card {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%) scale(0.9);
+    opacity: 0;
+    padding: 30px;
+    width: 260px;
+    border-radius: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(15px);
+    text-align: center;
+    transition: 0.5s;
+}
+.card.show {
+    opacity: 1;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+.profile-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.name {font-size:18px;font-weight:600;margin-bottom:10px;}
+
+.btn {
+    display:block;
+    margin:8px 0;
+    padding:12px;
+    border-radius:12px;
+    text-decoration:none;
+    color:#fff;
+    background:rgba(255,255,255,0.05);
+    transition:0.2s;
+}
+.btn:hover {
+    background:rgba(255,255,255,0.15);
+    transform:scale(1.05);
+}
+
+/* CURSOR */
+.cursor-dot,.cursor-trail{
+    position:fixed;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    z-index:9999;
+}
+.cursor-dot{width:6px;height:6px;background:#fff;}
+.cursor-trail{width:30px;height:30px;border:1px solid rgba(255,255,255,0.4);}
+
+/* BG */
+canvas{position:fixed;width:100%;height:100%;z-index:-1;}
+</style>
 </head>
+
 <body>
-    <canvas class="matrix-bg" id="matrix"></canvas>
-    
-    <!-- Header -->
-    <div class="header">
-        <div class="profile-img"></div>
-        <h1>fwxxsk</h1>
-        <p class="subtitle">Sleepy Sec | Red Team | OSINT | Exploit Dev | PH Recon (+63 Globe)</p>
-    </div>
-    
-    <!-- Music Queue -->
-    <div class="music-section">
-        <h2 class="music-title">🎵 Music Queue - Locked & Loaded</h2>
-        <div class="playlist">
+
+<div id="enter-screen">
+    <button>Enter</button>
+</div>
+
+<canvas id="star"></canvas>
+
+<div class="card" id="card">
+    <img src="./587d67c5ed066bed847b5427191e87f4.jpg" class="profile-img">
+
+    <div class="name">sec</div>
+
+    <a href="https://discord.com/channels/@me" target="_blank" class="btn">
+        <i class="fab fa-discord"></i> Discord (911sec)
+    </a>
+
+    <a href="https://github.com/fwxxsk" target="_blank" class="btn">
+        <i class="fab fa-github"></i> GitHub
+    </a>
+
+    <a href="https://t.me/sleepysec" target="_blank" class="btn">
+        <i class="fab fa-telegram"></i> Telegram
+    </a>
+</div>
+
+<div class="cursor-dot"></div>
+<div class="cursor-trail"></div>
+
+<!-- YOUTUBE MUSIC -->
+<iframe id="yt"
+width="0" height="0"
+src="https://www.youtube.com/embed/J8SGtl9Dj6w?autoplay=0&loop=1&playlist=J8SGtl9Dj6w"
+allow="autoplay">
+</iframe>
+
+<script>
+// ENTER + MUSIC
+const btn = document.querySelector("#enter-screen button");
+const screen = document.getElementById("enter-screen");
+const card = document.getElementById("card");
+const yt = document.getElementById("yt");
+
+btn.onclick = () => {
+    yt.src = "https://www.youtube.com/embed/J8SGtl9Dj6w?autoplay=1&loop=1&playlist=J8SGtl9Dj6w";
+    screen.style.display = "none";
+    card.classList.add("show");
+};
+
+// CURSOR
+let mx=0,my=0,tx=0,ty=0;
+const dot=document.querySelector(".cursor-dot");
+const trail=document.querySelector(".cursor-trail");
+
+document.addEventListener("mousemove",e=>{
+    mx=e.clientX; my=e.clientY;
+});
+
+function animate(){
+    tx+=(mx-tx)*0.15;
+    ty+=(my-ty)*0.15;
+
+    dot.style.left=mx+"px";
+    dot.style.top=my+"px";
+    trail.style.left=tx+"px";
+    trail.style.top=ty+"px";
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+// STARS
+const c=document.getElementById("star");
+const ctx=c.getContext("2d");
+
+function resize(){
+    c.width=innerWidth;
+    c.height=innerHeight;
+}
+resize();
+window.onresize=resize;
+
+let stars=[];
+for(let i=0;i<100;i++){
+    stars.push({
+        x:Math.random()*c.width,
+        y:Math.random()*c.height,
+        r:Math.random()*1.5,
+        s:Math.random()*0.3
+    });
+}
+
+function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.fillStyle="#fff";
+
+    stars.forEach(s=>{
+        s.y+=s.s;
+        if(s.y>c.height)s.y=0;
+
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
