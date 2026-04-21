@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sec</title>
+    <title>sec | Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -193,11 +193,11 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
-        /* Hidden Audio Element */
-        #bg-music {
-            display: none;
+        /* Responsive Fix for Mobile Cursor */
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-trail { display: none; }
+            * { cursor: auto; }
         }
-
     </style>
 </head>
 <body>
@@ -210,7 +210,7 @@
     </div>
 
     <audio id="bg-music" loop preload="auto">
-    <source src="copilot.mp3" type="audio/mpeg">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
     
     <canvas id="star-canvas"></canvas>
@@ -218,9 +218,8 @@
 
     <div class="main-container" id="main-content">
         <div class="profile-card">
-            
             <div class="avatar-container">
-    <img src="https://i.pinimg.com/originals/d5/ba/d3/d5bad3de85471ee999bd9b1900c3eb32.jpg" alt="Profile" class="avatar">
+                <img src="https://i.pinimg.com/originals/d5/ba/d3/d5bad3de85471ee999bd9b1900c3eb32.jpg" alt="Profile" class="avatar">
             </div>
 
             <h1 class="name">sec</h1>
@@ -236,11 +235,11 @@
                 <a href="https://github.com/fwxxsk" target="_blank" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
                 <a href="https://t.me/sleepyces" target="_blank" class="link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
             </div>
-
         </div>
     </div>
 
     <script>
+        // Star Animation
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
@@ -283,6 +282,7 @@
         drawStars();
         window.addEventListener('resize', initStars);
 
+        // Custom Cursor
         const dot = document.getElementById('cursor-dot');
         const trail = document.getElementById('cursor-trail');
         let mouseX = window.innerWidth / 2;
@@ -308,16 +308,17 @@
         }
         animateCursor();
 
+        // Audio and Entrance Logic
         const entryScreen = document.getElementById('entry-screen');
         const mainContent = document.getElementById('main-content');
         const audio = document.getElementById('bg-music');
 
         entryScreen.addEventListener('click', () => {
-            // Start the music as soon as they click
-            audio.play(); 
+            audio.volume = 0.5;
+            audio.play().catch(e => console.error("Playback failed:", e));
             
             entryScreen.style.opacity = '0';
-            setTimeout(() => { entryScreen.style.visibility = 'hidden'; }, 800);
+            setTimeout(() => { entryScreen.style.display = 'none'; }, 800);
             mainContent.classList.add('visible');
         });
     </script>
