@@ -354,7 +354,7 @@ body {
     min-height: 100dvh;
     height: 100%;
     padding-inline: max(var(--safe-x), 12px) max(var(--safe-r), 12px);
-    padding-bottom: max(12px, var(--safe-b));
+    padding-bottom: calc(max(12px, var(--safe-b)) + 2.75rem);
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
@@ -456,6 +456,23 @@ body {
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.site-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 55;
+    padding: 0.65rem max(var(--safe-x), 16px) max(0.75rem, var(--safe-b));
+    text-align: center;
+    font-size: clamp(0.65rem, 1.9vw, 0.76rem);
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(180, 180, 180, 0.55);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+    pointer-events: none;
 }
 
 @media (max-width: 420px) {
