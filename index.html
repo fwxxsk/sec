@@ -1,92 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>sec | Developer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-trail" id="cursor-trail"></div>
-
-    <div id="playing-notice" class="playing-notice" hidden aria-live="polite">
-        <span class="playing-dot" aria-hidden="true"></span>
-        <span class="playing-label">Playing</span>
-        <span class="playing-track" id="playing-detail">Co-Pilot — Just Hush</span>
-    </div>
-
-    <div id="entry-screen">
-        <div class="entry-inner">
-            <div class="album-showcase" aria-hidden="true">
-                <div class="album-sleeve">
-                    <img
-                        class="sleeve-cover"
-                        src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cace1bdabda6d847f3bd81ab"
-                        width="640"
-                        height="640"
-                        alt="Co-Pilot — Just Hush">
-                </div>
-                <div class="vinyl-side">
-                    <div class="vinyl-wrap">
-                        <div class="vinyl-disk">
-                            <div class="vinyl-label">
-                                <img
-                                    src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cace1bdabda6d847f3bd81ab"
-                                    width="256"
-                                    height="256"
-                                    alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="entry-album-meta">
-                <div class="entry-track">Co-Pilot</div>
-                <div class="entry-artist">Just Hush</div>
-            </div>
-            <div class="click-text">[ enter mo kung di ka bobo haha ]</div>
-        </div>
-    </div>
-
-    <audio id="bg-music" loop preload="auto" playsinline>
-        <source src="audio.mp3" type="audio/mpeg">
-    </audio>
-
-    <canvas id="star-canvas"></canvas>
-    <div class="bg-overlay"></div>
-
-    <div class="main-container" id="main-content">
-        <div class="profile-card">
-            <div class="avatar-container">
-                <img src="https://i.pinimg.com/originals/d5/ba/d3/d5bad3de85471ee999bd9b1900c3eb32.jpg" alt="Profile" class="avatar">
-            </div>
-
-            <h1 class="name">sec</h1>
-
-            <!-- ADDED BIO (NO REMOVAL) -->
-            <div class="bio">fear no one</div>
-
-            <div class="badges">
-                <div class="badge"><i class="fa-solid fa-code"></i> Developer</div>
-                <div class="badge"><i class="fa-solid fa-location-dot"></i> Philippines</div>
-                <div class="badge"><i class="fa-solid fa-user"></i> 14y/o</div>
-            </div>
-
-            <div class="links">
-                <a href="https://discord.com/users/911sec" target="_blank" class="link-btn"><i class="fa-brands fa-discord"></i> Discord</a>
-                <a href="https://github.com/fwxxsk" target="_blank" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
-                <a href="https://t.me/sleepyces" target="_blank" class="link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
-            </div>
-        </div>
-    </div>
-
-    <footer class="site-footer">@911 // ROOTED FROM GANJA</footer>
-
-    <script src="script.js"></script>
-</body>
-                    </html>
-                    
+‎<!DOCTYPE html>
+‎<html lang="en">
+‎<head>
+‎    <meta charset="UTF-8">
+‎    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+‎    <title>sec | Developer</title>
+‎    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+‎    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+‎    <link rel="stylesheet" href="styles.css">
+‎</head>
+‎<body>
+‎
+‎    <div class="cursor-dot" id="cursor-dot"></div>
+‎    <div class="cursor-trail" id="cursor-trail"></div>
+‎
+‎    <div id="playing-notice" class="playing-notice" hidden aria-live="polite">
+‎        <span class="playing-dot" aria-hidden="true"></span>
+‎        <span class="playing-label">Playing</span>
+‎        <span class="playing-track" id="playing-detail">Co-Pilot — Just Hush</span>
+‎    </div>
+‎
+‎    <div id="entry-screen">
+‎        <div class="entry-inner">
+‎            <div class="album-showcase" aria-hidden="true">
+‎                <div class="album-sleeve">
+‎                    <img
+‎                        class="sleeve-cover"
+‎                        src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cace1bdabda6d847f3bd81ab"
+‎                        width="640"
+‎                        height="640"
+‎                        alt="Co-Pilot — Just Hush">
+‎                </div>
+‎                <div class="vinyl-side">
+‎                    <div class="vinyl-wrap">
+‎                        <div class="vinyl-disk">
+‎                            <div class="vinyl-label">
+‎                                <img
+‎                                    src="https://image-cdn-ak.spotifycdn.com/image/ab67616d00001e02cace1bdabda6d847f3bd81ab"
+‎                                    width="256"
+‎                                    height="256"
+‎                                    alt="">
+‎                            </div>
+‎                        </div>
+‎                    </div>
+‎                </div>
+‎            </div>
+‎            <div class="entry-album-meta">
+‎                <div class="entry-track">Co-Pilot</div>
+‎                <div class="entry-artist">Just Hush</div>
+‎            </div>
+‎            <div class="click-text">[ enter mo kung di ka bobo haha ]</div>
+‎        </div>
+‎    </div>
+‎
+‎    <audio id="bg-music" loop preload="auto" playsinline>
+‎        <source src="audio.mp3" type="audio/mpeg">
+‎    </audio>
+‎
+‎    <canvas id="star-canvas"></canvas>
+‎    <div class="bg-overlay"></div>
+‎
+‎    <div class="main-container" id="main-content">
+‎        <div class="profile-card">
+‎            <div class="avatar-container">
+‎                <img src="https://i.pinimg.com/originals/d5/ba/d3/d5bad3de85471ee999bd9b1900c3eb32.jpg" alt="Profile" class="avatar">
+‎            </div>
+‎
+‎            <h1 class="name">sec</h1>
+‎
+‎            <div class="badges">
+‎                <div class="badge"><i class="fa-solid fa-code"></i> Developer</div>
+‎                <div class="badge"><i class="fa-solid fa-location-dot"></i> Philippines</div>
+‎                <div class="badge"><i class="fa-solid fa-user"></i> 14y/o</div>
+‎            </div>
+‎
+‎            <div class="links">
+‎                <a href="https://discord.com/users/911sec" target="_blank" class="link-btn"><i class="fa-brands fa-discord"></i> Discord</a>
+‎                <a href="https://github.com/fwxxsk" target="_blank" class="link-btn"><i class="fa-brands fa-github"></i> GitHub</a>
+‎                <a href="https://t.me/sleepyces" target="_blank" class="link-btn"><i class="fa-brands fa-telegram"></i> Telegram</a>
+‎            </div>
+‎        </div>
+‎    </div>
+‎
+‎    <footer class="site-footer">@911 // ROOTED FROM GANJA</footer>
+‎
+‎    <script src="script.js"></script>
+‎</body>
+‎</html>
